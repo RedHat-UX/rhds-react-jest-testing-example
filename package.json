@@ -11,7 +11,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "type": "module",
   "private": true,
   "dependencies": {
@@ -40,5 +40,9 @@
     "postcss": "^8.5.32",
     "typescript": "^5.9.3",
     "vite": "^8.3.8"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RedHat-UX/rhds-react-jest-testing-example.git"
   }
 }

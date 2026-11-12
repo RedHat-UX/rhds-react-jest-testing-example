@@ -475,4 +475,8 @@ JSDOM plus a small, well-documented shim layer is enough to run the real
 components. Application tests stay stable across shadow-DOM refactors, and the
 design system keeps ownership of its internal correctness.
 
+## License
+
+MIT. See [LICENSE](./LICENSE).
+
 [asmnm]: https://bennypowers.dev/asimonim/
