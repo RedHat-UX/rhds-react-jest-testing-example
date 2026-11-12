@@ -1,0 +1,44 @@
+{
+  "name": "rhds-react-jest-poc",
+  "version": "0.1.0",
+  "description": "Proof of concept: testing @rhds/elements React wrappers in Jest + RTL without piercing Shadow DOM",
+  "scripts": {
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "typecheck": "tsc --noEmit",
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "test:watch": "NODE_OPTIONS=--experimental-vm-modules jest --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "private": true,
+  "dependencies": {
+    "@lit/react": "^1.0.8",
+    "@rhds/elements": "^5.0.0",
+    "@rhds/tokens": "^3.2.0",
+    "lit": "^3.3.3",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "devDependencies": {
+    "@swc/core": "^1.16.22",
+    "@swc/jest": "^0.2.39",
+    "@testing-library/dom": "^10.4.2",
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.10",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^26.6.6",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.3.0",
+    "element-internals-polyfill": "^3.0.2",
+    "jest": "^30.5.2",
+    "jest-environment-jsdom": "^30.5.2",
+    "postcss": "^8.5.32",
+    "typescript": "^5.9.3",
+    "vite": "^8.3.8"
+  }
+}
