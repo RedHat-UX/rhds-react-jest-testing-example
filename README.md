@@ -18,7 +18,7 @@ before copying this setup into a product repository.
 
 | Area                      | Workaround / caveat                                                                                                                                                                                                                                                                                                                                            |
 | ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Jest module format        | Runs as native ESM via `NODE_OPTIONS=--experimental-vm-modules` because `rh-icon` has top-level `await` in a server-only branch. Node prints an `ExperimentalWarning`; it is not a test failure.                                                                                                                                                               |
+| Jest module format        | Runs as native ESM via `NODE_OPTIONS=--experimental-vm-modules` because `rh-icon` has top-level `await` in a server-only branch. Node prints an `ExperimentalWarning`; it is not a test failure. Upstream fix in flight: [RedHat-UX/red-hat-design-system#3361](https://github.com/RedHat-UX/red-hat-design-system/pull/3361) removes the top-level await via an SSR export condition. Not merged or released as of 2026-11-12.                                                                                                                                                               |
 | ElementInternals          | JSDOM's partial implementation is replaced by `element-internals-polyfill`. The polyfill is sealed and older than some ARIAMixin properties, so `jest.setup.ts` adds prototype fallbacks. Those fallbacks only store values; they do not reflect every `aria-*` attribute to the host. Tests that assert `InternalsController` ARIA output need a fuller shim. |
 | Constructable stylesheets | `replaceSync`, `replace`, and `adoptedStyleSheets` are shimmed so Lit uses constructed sheets and JSDOM stops rejecting modern RHDS CSS. CSS is stored, not parsed. Do not assert computed styles that depend on the token sheet.                                                                                                                              |
 | Observers and media       | `IntersectionObserver` and `ResizeObserver` are inert. `matchMedia` always reports no matches. Lazy icon loading, overflow behavior, and reduced-motion branches are not exercised.                                                                                                                                                                            |
@@ -168,7 +168,7 @@ upstream. This demo uses only non-deprecated names such as
 `--rh-color-surface-lighter`, `--rh-color-text-secondary`,
 `--rh-color-status-success`, and `--rh-space-xl`.
 
-## Why Jest runs as ESM
+## Why Jest runs as ESM (temporary workaround)
 
 `@rhds/elements` is ESM-only. More importantly, `rh-icon` (imported statically by
 `rh-switch` and `rh-alert`, and dynamically by `rh-dialog`'s close button)
@@ -191,9 +191,21 @@ NODE_OPTIONS=--experimental-vm-modules jest
 The `test` script already sets that flag. Node prints an `ExperimentalWarning`
 for VM modules. It does not affect test results and is not a test error.
 
-If your app stays on CommonJS Jest, you need a plan for that top-level await
-(for example, a transform that rewrites it). That is outside the public testing
-contract described here.
+### Upstream fix in flight
+
+[RedHat-UX/red-hat-design-system#3361](https://github.com/RedHat-UX/red-hat-design-system/pull/3361),
+`fix(icon): remove top-level await from element module`, replaces the
+top-level await with an `rh-icon.ssr` entry selected through the package
+export map. Node gets the SSR entry; browsers, bundlers using browser
+conditions, and JSDOM keep the plain client module.
+
+Status as of 2026-11-12: open, not merged, not released. This maquette stays on
+native ESM until a released `@rhds/elements` version contains the fix and the
+suite is rechecked without `--experimental-vm-modules`.
+
+If your app stays on CommonJS Jest today, you need a plan for that top-level
+await (for example, a transform that rewrites it). That is outside the public
+testing contract described here.
 
 ## Jest configuration
 
